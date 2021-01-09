@@ -1,0 +1,23 @@
+{
+  "name": "video-chat-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/index.js"
+  },
+  "author": "Sudhir Pawar",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "kurento-client": "^6.15.0",
+    "minimist": "^1.2.5",
+    "mongoose": "^5.11.10",
+    "socket.io": "^3.0.5",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}

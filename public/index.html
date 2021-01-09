@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form>
+        username: <input type="text" name="username" id="username" required>
+        <br>
+        <button id="create-room" type="submit">Create new Room</button>
+        <br>
+        OR
+        <br>
+        <input type="text" style="width: 300px;" name="room" id="room" placeholder="Enter roomId to join.">
+        <br>
+        <button id="join-room" type="submit">Join Room</button>
+
+        <div id="video-container"></div>
+        <video class="local-video" autoplay></video>
+        <video class="remote-video" autoplay></video>
+        </div>
+    </form>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/js/adapter.min.js"></script>
+    <script src="/js/kurento-utils.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+
+</html>
