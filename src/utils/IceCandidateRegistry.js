@@ -1,6 +1,7 @@
 const { RoomRegistry } = require("./RoomRegistry");
 class IceCandidateRegistry {
   static candidates = {};
+  static inCandidates = {};
   constructor(userId, roomId, candidate) {
     this.userId = userId;
     this.roomId = roomId;
@@ -31,12 +32,41 @@ class IceCandidateRegistry {
     const icecandidates = this.candidates[userId];
     if (icecandidates) {
       icecandidates.forEach((candidate) => {
-        console.log(candidate);
+        // console.log(candidate);
         webRtcEndpoint.addIceCandidate(candidate);
       });
       this.candidates[userId] = [];
     }
   }
+  static onIceCandidateIncomingPeer = function (
+    userId,
+    room,
+    participantId,
+    candidate
+  ) {
+    const user = RoomRegistry.getRoomById(room.roomId).getParticipant(userId);
+    if (user.inWebRtcEndpoints[participantId]) {
+      return user.inWebRtcEndpoints[participantId].addIceCandidate(candidate);
+    }
+    if (!this.inCandidates[participantId]) {
+      this.inCandidates[participantId] = [];
+    }
+
+    this.inCandidates[participantId].push(candidate);
+  };
+
+  static addIceCandidateIncomingPeer = function (
+    participantId,
+    inWebRtcEndpoint
+  ) {
+    const icecandidates = this.inCandidates[participantId];
+
+    icecandidates.forEach((candidate) => {
+      inWebRtcEndpoint.addIceCandidate(candidate);
+    });
+
+    this.inCandidates[participantId] = [];
+  };
 }
 
 module.exports = { IceCandidateRegistry };

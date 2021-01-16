@@ -17,21 +17,30 @@ class RoomRegistry {
     if (
       participant.userId === null ||
       participant.username === null ||
-      participant.webRtcEndpoint === null
+      participant.webRtcEndpoint === null ||
+      participant.inWebRtcEndpoint === null
     )
       return false;
     this.participants.push(participant);
     return true;
   }
   static validateRoom(room) {
-    if (!uuidValidte(room.roomId) || room.createdBy === null) return false;
+    if (
+      !uuidValidte(room.roomId) ||
+      room.createdBy === null ||
+      this.roomExits(room)
+    )
+      return false;
     return true;
   }
-  static isRoomIdPresent(room) {
-    return this.rooms.every((temp_room) => temp_room.roomId != room.roomId);
+  static roomExits(roomId) {
+    if (this.rooms.find((room) => room.roomId === roomId)) {
+      return true;
+    }
+    return false;
   }
   static registerRoom(room) {
-    if (!this.validateRoom(room) || !this.isRoomIdPresent(room)) return false;
+    if (!this.validateRoom(room)) return false;
     this.rooms.push(room);
     room.addParticipants(room.createdBy);
     return true;
@@ -44,6 +53,21 @@ class RoomRegistry {
     return this.participants.find(
       (participant) => participant.userId === userId
     );
+  }
+  removeParticipant(userId) {
+    this.participants = this.participants.filter(
+      (participant) => participant.userId !== userId
+    );
+  }
+  getParticipantIndex(userId) {
+    let index = -1;
+    this.participants.find((participant, _index) => {
+      if (participant.userId === userId) {
+        index = _index;
+        return;
+      }
+    });
+    return index;
   }
   getParticipants() {
     return this.participants;
